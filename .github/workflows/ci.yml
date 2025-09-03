@@ -1,0 +1,35 @@
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install PlatformIO
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U platformio
+
+    - name: Cache PlatformIO and library dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.platformio/packages
+          ~/.platformio/.cache
+        key: ${{ runner.os }}-platformio-${{ hashFiles('**/platformio.ini') }}
+        restore-keys: |
+          ${{ runner.os }}-platformio-
+
+    - name: Build PlatformIO project
+      run: pio run
