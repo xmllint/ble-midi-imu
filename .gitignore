@@ -3,7 +3,6 @@
 .pioenvs/
 .piolibdeps/
 libdeps/
-.vscode/
 *.pyc
 __pycache__/
 *.elf
